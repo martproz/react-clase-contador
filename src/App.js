@@ -1,46 +1,52 @@
+import React from 'react';
 import './App.css';
 import Boton from './componentes/Boton';
 import Contador from './componentes/Contador';
 import freeCodeCampLogo from './imagenes/FreeCodeCamp_logo.png';
-import { useState } from 'react'; //useState es un hook
 
-function App() {
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      numClics: 0
+    };
+    this.manejarClic = this.manejarClic.bind(this);
+    this.reiniciarContador = this.reiniciarContador.bind(this);
+  }
 
-  //definimos la función en el componente 3:18:18
-  //la función flecha no tendrá ningún parámetro y retornará lo que está entre paréntesis
-  
-  const [numClics, setNumClics] = useState(0) //0 es el valor inicial del número de clics
-  const manejarClic = () => {
-    setNumClics(numClics + 1);
-  };
+  manejarClic() {
+    this.setState(( {numClics} )=> (  { numClics: numClics + 1} ));
+  }
 
-  const reiniciarContador = () => {
-    setNumClics(0);
-  };
+  reiniciarContador() {
+    this.setState( {numClics: 0} );
+  }
 
-  return (
-    <div className='App'>
-      <div className='freecodecamp-logo-contenedor'>
-        <img className='freecodecamp-logo'
-        src={freeCodeCampLogo}
-        alt= 'Logo de freeCodeCamp' 
-        />
-      </div>
-      <div className='contenedor-principal'>
-        <Contador numClics={numClics}/>
-        <Boton 
-          texto='Clic'
-          esBotonDeClic={true}
-          manejarClic={manejarClic} //estamos diciendo que se asigne la función manejarClic entre llaves al prop manejarClic seguido de igual. Luego, como el prop MC tiene el valor {MC}, lo recibirá el botón onclick de Boton.js
-          /> 
-        <Boton 
-          texto='Reiniciar'
-          esBotonDeClic={false}
-          manejarClic={reiniciarContador}
+  render() {
+    return (
+      <div className='App'>
+        <div className='freecodecamp-logo-contenedor'>
+          <img className='freecodecamp-logo'
+          src={freeCodeCampLogo}
+          alt= 'Logo de freeCodeCamp' 
           />
+        </div>
+        <div className='contenedor-principal'>
+          <Contador numClics={this.state.numClics} />
+          <Boton 
+            texto='Clic'
+            esBotonDeClic={true}
+            manejarClic={this.manejarClic} //estamos diciendo que se asigne la función manejarClic entre llaves al prop manejarClic seguido de igual. Luego, como el prop MC tiene el valor {MC}, lo recibirá el botón onclick de Boton.js
+            /> 
+          <Boton 
+            texto='Reiniciar'
+            esBotonDeClic={false}
+            manejarClic={this.reiniciarContador}
+            />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
